@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/back.png</file>
+        <file>image/menu.png</file>
+        <file>image/pause.png</file>
+        <file>image/random.png</file>
+        <file>image/recycle.png</file>
+        <file>image/search.png</file>
+        <file>image/播放.png</file>
+        <file>image/向后.png</file>
+        <file>image/向前.png</file>
+    </qresource>
+</RCC>
