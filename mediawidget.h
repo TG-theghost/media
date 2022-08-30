@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QListWidgetItem>
 #include <QRect>
+#include <QTableWidgetItem>
 //#include <QObject>
 namespace Ui {
 class Widget;
@@ -39,16 +40,35 @@ private slots:
 
     void on_playSlider_sliderReleased();
 
+    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+
+
+    void on_listWidget_doubleClicked(const QModelIndex &index);
+
+    void on_voicebtn_clicked();
+
+    void on_voiceSlider_valueChanged(int value);
+
+    void on_nextbtn_clicked();
+
+    void on_lastbtn_clicked();
+
+    void on_playmodebtn_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* mediaplayer;
     QMediaPlaylist* mediaplaylist;
     QVideoWidget* videowidget;
+
     int i=1;
 
     bool n=true;
 
     int dblclick=0;    //判断双击次数
+    bool muted=0;
+    bool hide=1;
+    bool playmode=1;
     QRect rect0;//全屏定位
 
 

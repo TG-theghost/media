@@ -15,9 +15,11 @@ Widget::Widget(QWidget *parent) :
     mediaplayer->setPlaylist(mediaplaylist);
     mediaplayer->setVideoOutput(videowidget);
     connect(mediaplayer,&QMediaPlayer::positionChanged,this, &Widget::on_playpositionchanged);
-
+    mediaplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+    ui->voiceSlider->hide();
 
     ui->label->installEventFilter(this);//绑定过滤器
+    ui->voicebtn->installEventFilter(this);
 
 }
 
@@ -32,6 +34,7 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
         if(eve->type()==QEvent::MouseButtonDblClick){
             dblclick++;
             if(dblclick%2==1){
+                qDebug()<<"233";
                 rect0=ui->label->geometry();
                 ui->label->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
                 ui->label->showFullScreen();
@@ -43,8 +46,27 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
                 ui->label->setGeometry(rect0);
             }
         }
-        return QObject::eventFilter(obj,eve);
+
+
     }
+    if(obj == ui->voicebtn){
+        if(eve->type()==QEvent::MouseButtonDblClick){
+            if(muted==0)
+            {
+                mediaplayer->setMuted(true);
+                muted=1;
+            }
+            else
+            {
+                mediaplayer->setMuted(false);
+                muted=0;
+            }
+
+        }
+
+
+    }
+     return QObject::eventFilter(obj,eve);
 }
 void Widget::on_pushButton_clicked()//打开文件按钮
 {
@@ -65,12 +87,16 @@ void Widget::on_toolButton_clicked()//播放按钮
     {
         mediaplayer->play();
         videowidget->resize(ui->label->size());
+        ui->toolButton->setIcon(QIcon(":/image/pause.png"));
+        ui->toolButton->setIconSize(QSize(60,60));
         i=0;
     }
     else if(i==0)
     {
         mediaplayer->pause();
         videowidget->resize(ui->label->size());
+        ui->toolButton->setIcon(QIcon(":/image/播放.png"));
+        ui->toolButton->setIconSize(QSize(60,60));
         i=1;
     }
 }
@@ -83,12 +109,12 @@ void Widget::on_playpositionchanged(int value)
 {
     if(n==true){
         qint64 t=mediaplayer->duration();
-        qDebug ("%d %d",value,t);
+        //qDebug ("%d %d",value,t);
         if(t!=0)
         {
             qint64 nx=100*value/t;
             ui->playSlider->setValue(nx);
-            qDebug ("%d",nx);
+           // qDebug ("%d",nx);
         }
     }
 
@@ -106,4 +132,70 @@ void Widget::on_playSlider_sliderPressed()
 void Widget::on_playSlider_sliderReleased()
 {
     n=true;
+}
+
+
+
+void Widget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    //qDebug()<< item->
+
+}
+
+
+
+
+void Widget::on_listWidget_doubleClicked(const QModelIndex &index)
+{
+
+}
+
+void Widget::on_voicebtn_clicked()
+{
+    if(hide==1)
+    {
+        ui->voiceSlider->show();
+        hide=0;
+    }
+    else
+    {
+        ui->voiceSlider->hide();
+        hide=1;
+    }
+
+
+}
+
+void Widget::on_voiceSlider_valueChanged(int value)
+{
+    mediaplayer->setVolume(value);
+}
+
+void Widget::on_nextbtn_clicked()
+{
+    mediaplaylist->next();
+}
+
+void Widget::on_lastbtn_clicked()
+{
+     mediaplaylist->previous();
+}
+
+void Widget::on_playmodebtn_clicked()
+{
+    if(playmode==1)
+    {
+        ui->playmodebtn->setIcon(QIcon(":/image/random.png"));
+        mediaplaylist->setPlaybackMode(QMediaPlaylist::Random);
+        playmode=0;
+
+    }
+    else
+    {
+        ui->playmodebtn->setIcon(QIcon(":/image/recycle.png"));
+        mediaplaylist->setPlaybackMode(QMediaPlaylist::Loop);
+        playmode=1;
+    }
+
+
 }
