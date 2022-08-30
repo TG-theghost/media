@@ -87,7 +87,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -98,7 +98,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>0</x>

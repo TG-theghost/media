@@ -8,7 +8,6 @@
 #include <QWidget>
 #include <QLabel>
 #include <QListWidgetItem>
-#include <QRect>
 //#include <QObject>
 namespace Ui {
 class Widget;
@@ -45,17 +44,7 @@ private:
     QMediaPlaylist* mediaplaylist;
     QVideoWidget* videowidget;
     int i=1;
-
     bool n=true;
-
-    int dblclick=0;    //判断双击次数
-    QRect rect0;//全屏定位
-
-
-    bool eventFilter(QObject *obj,QEvent *eve);
 };
-
-
-
 
 #endif // MEDIAWIDGET_H
