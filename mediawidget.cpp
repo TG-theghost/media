@@ -11,15 +11,36 @@ Widget::Widget(QWidget *parent) :
     mediaplayer=new QMediaPlayer;
     mediaplaylist=new QMediaPlaylist;
     videowidget=new QVideoWidget(ui->label);
-    ui->label->setStyleSheet("background-color:rgb(255,255,255)");//label界面style
+    minimediaplayer=new QMediaPlayer;
+    minivideowidget=new QVideoWidget(ui->miniviewlable);
     mediaplayer->setPlaylist(mediaplaylist);
     mediaplayer->setVideoOutput(videowidget);
+    minimediaplayer->setPlaylist(mediaplaylist);
+    minimediaplayer->setVideoOutput(minivideowidget);
+
+    minimediaplayer->setMuted(true);
+    ui->label->setStyleSheet("background-color:rgb(255,255,255)");//label界面style
+
+
     connect(mediaplayer,&QMediaPlayer::positionChanged,this, &Widget::on_playpositionchanged);
     mediaplaylist->setPlaybackMode(QMediaPlaylist::Loop);
     ui->voiceSlider->hide();
+    //ui->miniviewlable->setStyleSheet("background-color:rgb(0,0,0)");
+    ui->miniviewlable->hide();
+    ui->voicebtn->setMouseTracking(true);//打开鼠标追踪
+    ui->playSlider->setMouseTracking(true);
+    ui->vcwidget->setMouseTracking(true);
+    ui->playSlider->setMouseTracking(true);
+    ui->playslidewidget->setMouseTracking(true);
+    ui->label->setMouseTracking(true);
 
     ui->label->installEventFilter(this);//绑定过滤器
     ui->voicebtn->installEventFilter(this);
+    ui->vcwidget->installEventFilter(this);
+    ui->playSlider->installEventFilter(this);
+    ui->playslidewidget->installEventFilter(this);
+    ui->label->installEventFilter(this);
+
 
 }
 
@@ -52,22 +73,88 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
 
     }
     if(obj == ui->voicebtn){
-        if(eve->type()==QEvent::MouseButtonDblClick){
-            if(muted==0)
-            {
-                mediaplayer->setMuted(true);
-                muted=1;
-            }
-            else
-            {
-                mediaplayer->setMuted(false);
-                muted=0;
-            }
+        if(eve->type()==QEvent::MouseMove){
+             ui->voiceSlider->show();
+             ui->miniviewlable->hide();
+             hide=1;
+
 
         }
 
 
     }
+    if(obj == ui->vcwidget){
+        if(eve->type()==QEvent::MouseMove)
+        {
+             int x=ui->vcwidget->mapFromGlobal(QCursor().pos()).x();
+             int y=ui->vcwidget->mapFromGlobal(QCursor().pos()).y();
+
+             //qDebug()<<x<<y;
+             if(10>x||x>200||10>y||y>50)
+
+                         {
+                             ui->voiceSlider->hide();
+                             hide=0;
+                         }
+        }
+    }
+    if(obj == ui->playSlider){
+        if(eve->type()==QEvent::MouseMove)
+        {
+             int x=ui->playSlider->mapFromGlobal(QCursor().pos()).x();
+             int y=ui->playSlider->mapFromGlobal(QCursor().pos()).y();
+
+             //qDebug()<<x<<y;
+
+             if(x-80<0)
+             {
+                 ui->miniviewlable->setGeometry(10,349,160,90);
+             }
+             else if(x+80>800)
+             {
+                 ui->miniviewlable->setGeometry(650,349,160,90);
+             }
+             else
+             {
+                  ui->miniviewlable->setGeometry(x-80,349,160,90);
+             }
+
+             //ui->miniviewlable->setStyleSheet("background-color:rgb(0,0,0)");
+             if(hide!=1)
+             {
+                 ui->miniviewlable->show();
+                 minimediaplayer->play();
+                 qint64 t=mediaplayer->duration();
+                 minimediaplayer->setPosition(x*t/800);
+                 minivideowidget->resize(ui->miniviewlable->size());
+                 minimediaplayer->pause();
+             }
+
+
+
+        }
+    }
+    if(obj == ui->playslidewidget){
+        if(eve->type()==QEvent::MouseMove){
+            int x=ui->playslidewidget->mapFromGlobal(QCursor().pos()).x();
+            int y=ui->playslidewidget->mapFromGlobal(QCursor().pos()).y();
+            if(x<750||x>810)
+            {
+                ui->voiceSlider->hide();
+                hide=0;
+            }
+            if(x<10||x>810||y<450||y>472)
+            {
+                ui->miniviewlable->hide();
+            }
+
+
+
+        }
+
+
+    }
+
      return QObject::eventFilter(obj,eve);
 }
 void Widget::on_pushButton_clicked()//打开文件按钮
@@ -82,6 +169,9 @@ void Widget::on_pushButton_clicked()//打开文件按钮
 
     }
     i=1;
+    mediaplayer->play();
+    videowidget->resize(ui->label->size());
+    mediaplayer->pause();
 }
 void Widget::on_toolButton_clicked()//播放按钮
 {
@@ -154,16 +244,19 @@ void Widget::on_listWidget_doubleClicked(const QModelIndex &index)
 
 void Widget::on_voicebtn_clicked()
 {
-    if(hide==1)
+    if(muted==0)
     {
-        ui->voiceSlider->show();
-        hide=0;
+        mediaplayer->setMuted(true);
+        muted=1;
     }
     else
     {
-        ui->voiceSlider->hide();
-        hide=1;
+        mediaplayer->setMuted(false);
+        muted=0;
     }
+
+
+
 
 
 }

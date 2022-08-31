@@ -35,32 +35,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>800</width>
-     <height>450</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QSlider" name="playSlider">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>475</y>
-     <width>800</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
@@ -83,49 +57,11 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
-  <widget class="QToolButton" name="voicebtn">
-   <property name="geometry">
-    <rect>
-     <x>770</x>
-     <y>490</y>
-     <width>40</width>
-     <height>40</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>音量</string>
-   </property>
-   <property name="autoRaise">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QSlider" name="voiceSlider">
-   <property name="geometry">
-    <rect>
-     <x>780</x>
-     <y>320</y>
-     <width>22</width>
-     <height>160</height>
-    </rect>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="value">
-    <number>99</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
-   </property>
-  </widget>
   <widget class="QToolButton" name="toolButton">
    <property name="geometry">
     <rect>
      <x>390</x>
-     <y>490</y>
+     <y>500</y>
      <width>60</width>
      <height>60</height>
     </rect>
@@ -151,7 +87,7 @@
    <property name="geometry">
     <rect>
      <x>450</x>
-     <y>497</y>
+     <y>507</y>
      <width>45</width>
      <height>45</height>
     </rect>
@@ -177,7 +113,7 @@
    <property name="geometry">
     <rect>
      <x>345</x>
-     <y>497</y>
+     <y>507</y>
      <width>45</width>
      <height>45</height>
     </rect>
@@ -203,7 +139,7 @@
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>500</y>
+     <y>510</y>
      <width>45</width>
      <height>45</height>
     </rect>
@@ -224,6 +160,97 @@
    <property name="autoRaise">
     <bool>true</bool>
    </property>
+  </widget>
+  <widget class="QWidget" name="playslidewidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>820</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <widget class="QSlider" name="playSlider">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>800</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>800</width>
+      <height>450</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="miniviewlable">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>160</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="vcwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>500</y>
+     <width>220</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <widget class="QToolButton" name="voicebtn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>音量</string>
+    </property>
+    <property name="autoRaise">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QSlider" name="voiceSlider">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>150</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>99</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

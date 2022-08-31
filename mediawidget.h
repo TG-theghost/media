@@ -60,6 +60,9 @@ private:
     QMediaPlayer* mediaplayer;
     QMediaPlaylist* mediaplaylist;
     QVideoWidget* videowidget;
+    QMediaPlayer* minimediaplayer;
+    QVideoWidget* minivideowidget;
+
 
     int i=1;
 
