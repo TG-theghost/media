@@ -38,12 +38,14 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
                 rect0=ui->label->geometry();
                 ui->label->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
                 ui->label->showFullScreen();
+                videowidget->resize(ui->label->size());
 
             }
             else{
                 ui->label->setWindowFlags(Qt::SubWindow);
                 ui->label->showNormal();
                 ui->label->setGeometry(rect0);
+                videowidget->resize(ui->label->size());
             }
         }
 
