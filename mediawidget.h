@@ -26,6 +26,10 @@
 
 #include <QScreen>
 #include <QPixmap>
+#include <QPainter>
+#include <QApplication>
+#include <QGraphicsView>
+#include <QGraphicsProxyWidget>
 namespace Ui {
 class Widget;
 }
@@ -58,6 +62,9 @@ private slots:
     void ScreenShots();
     void Pause();
     void keyPressEvent(QKeyEvent *eve);
+    void speed0();
+    void speed1();
+    void speed2();
 
 
 private:
@@ -72,17 +79,15 @@ private:
     int i=1;
 
     bool n=true;
-<<<<<<< HEAD
     int m_oldWidth;
     int m_oldHeight;
-=======
     int screenshotnum=0;
->>>>>>> 438a0b0b11a1449b6ac290c07d8a23ab8da34a21
     int dblclick=0;    //判断双击次数
     bool muted=0;
     bool hide=1;
     bool playmode=1;
     QRect rect0;//全屏定位
+    int speednum=1;
 
 
     bool eventFilter(QObject *obj,QEvent *eve);

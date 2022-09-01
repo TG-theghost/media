@@ -21,7 +21,7 @@ Widget::Widget(QWidget *parent) :
     minimediaplayer->setVideoOutput(minivideowidget);
 
     minimediaplayer->setMuted(true);
-    ui->label->setStyleSheet("background-color:rgb(255,255,255)");//label界面style
+    ui->label->setStyleSheet("background-color:rgb(0,0,0)");//label界面style
     ui->miniviewlable->raise();
 
     connect(mediaplayer,&QMediaPlayer::positionChanged,this, &Widget::on_playpositionchanged);
@@ -42,6 +42,8 @@ Widget::Widget(QWidget *parent) :
     ui->playSlider->installEventFilter(this);
     ui->playslidewidget->installEventFilter(this);
     ui->label->installEventFilter(this);
+    ui->speedBtn->installEventFilter(this);
+
 
 
 
@@ -53,7 +55,7 @@ Widget::~Widget()
 }
 
 
-bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢复
+bool Widget::eventFilter(QObject *obj,QEvent *eve){//事件过滤器
     if(obj == ui->label){
         if(eve->type()==QEvent::MouseButtonDblClick){
             dblclick++;
@@ -167,7 +169,24 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
 
 
     }
-
+    if(obj == ui->speedBtn){
+        if(eve->type()==QEvent::MouseButtonRelease){
+            speednum++;
+                if(speednum==1){
+                    speed0();
+                    ui->speedBtn->setText("X1.0");
+                }
+                if(speednum==2){
+                    speed1();
+                    ui->speedBtn->setText("X1.5");
+                }
+                if(speednum==3){
+                    speed2();
+                    ui->speedBtn->setText("X2.0");
+                    speednum=0;
+                }
+        }
+    }
      return QObject::eventFilter(obj,eve);
 }
 void Widget::on_pushButton_clicked()//打开文件按钮
@@ -298,10 +317,6 @@ void Widget::on_playmodebtn_clicked()
 
 
 }
-<<<<<<< HEAD
-
-
-=======
 void Widget::contextMenuEvent(QContextMenuEvent *eve){
     QMenu *menu = new QMenu();
 
@@ -319,7 +334,6 @@ void Widget::contextMenuEvent(QContextMenuEvent *eve){
     menu->exec(menuPos);
 
 }
-
 void Widget::ClockWise(){
     //ui->label->setRotation
     qDebug() << "顺时针旋转90°"<<endl;
@@ -371,4 +385,16 @@ void Widget::keyPressEvent(QKeyEvent *eve){
     }
     Widget::keyPressEvent(eve);
 }
->>>>>>> 438a0b0b11a1449b6ac290c07d8a23ab8da34a21
+//speed
+void Widget::speed0(){
+    qDebug()<<"X1.0"<<endl;
+    mediaplayer->setPlaybackRate(1);
+}
+void Widget::speed1(){
+    qDebug()<<"X1.5"<<endl;
+    mediaplayer->setPlaybackRate(1.5);
+}
+void Widget::speed2(){
+    qDebug()<<"X2.0"<<endl;
+    mediaplayer->setPlaybackRate(2);
+}
