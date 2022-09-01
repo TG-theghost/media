@@ -23,7 +23,7 @@
 #include <QMovie>
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>
-
+#include <QTimer>
 #include <QScreen>
 #include <QPixmap>
 #include <QPainter>
@@ -43,7 +43,10 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
 
+
+
 private slots:
+    void getduration(qint64 playtime);
     void on_pushButton_clicked();
     void on_toolButton_clicked();
     void on_playpositionchanged(int value);
@@ -57,13 +60,13 @@ private slots:
     void on_lastbtn_clicked();
     void on_playmodebtn_clicked();
     void contextMenuEvent(QContextMenuEvent *eve);
-    void ClockWise();
     void ScreenShots();
     void Pause();
     void keyPressEvent(QKeyEvent *eve);
     void speed0();
     void speed1();
     void speed2();
+
 
 
 private:
@@ -73,7 +76,7 @@ private:
     QVideoWidget* videowidget;
     QMediaPlayer* minimediaplayer;
     QVideoWidget* minivideowidget;
-
+    QStringList filenames;
 
     int i=1;
 

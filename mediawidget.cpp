@@ -44,6 +44,11 @@ Widget::Widget(QWidget *parent) :
     ui->speedBtn->installEventFilter(this);
 
 
+    QObject::connect(mediaplayer,
+                     SIGNAL(durationChanged(qint64)),
+                     this,
+                     SLOT(getduration(qint64)));
+
 
 
 }
@@ -53,20 +58,37 @@ Widget::~Widget()
     delete ui;
 }
 
+void Widget::getduration(qint64 playtime)//时间戳
+{
+    playtime = mediaplayer->duration();
+    qDebug()<<playtime<<endl;
+    qint64 h,m,s;
+    playtime /= 1000;  //获得的时间是以毫秒为单位的
+    h = playtime/3600;
+    m = (playtime-h*3600)/60;
+    s = playtime-h*3600-m*60;
+    qDebug()<<QString("%1:%2;%3").arg(h).arg(m).arg(s)<<endl;
+    QString dur=QString("%1:%2:%3").arg(h).arg(m).arg(s);
+    ui->dur->setText(dur);
+}
+
+
+
 
 bool Widget::eventFilter(QObject *obj,QEvent *eve){//事件过滤器
     if(obj == ui->label){//双击全屏
         if(eve->type()==QEvent::MouseButtonDblClick){
-
+            rect0=ui->label->geometry();
             dblclick++;
             if(dblclick%2==1){
                 //qDebug()<<"233";
-                rect0=ui->label->geometry();
+
                 ui->label->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
                 ui->label->showFullScreen();
                 videowidget->resize(ui->label->size());
 
             }
+
             else{
                 ui->label->setWindowFlags(Qt::SubWindow);
                 ui->label->showNormal();
@@ -193,11 +215,12 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//事件过滤器
                 }
         }
     }
-     return QObject::eventFilter(obj,eve);
+
+    return QObject::eventFilter(obj,eve);
 }
 void Widget::on_pushButton_clicked()//打开文件按钮
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this,"打开文件","C:/Users","allfiles(*.*);;""mp3(*.mp3);;""mp4(*.mp4);;""mkv(*.mkv)");
+    filenames = QFileDialog::getOpenFileNames(this,"打开文件","C:/Users","allfiles(*.*);;""mp3(*.mp3);;""mp4(*.mp4);;""mkv(*.mkv)");
     ui->listWidget->addItems(filenames);
     foreach(QString const & name,filenames)
     {
@@ -231,7 +254,6 @@ void Widget::on_toolButton_clicked()//播放按钮，已用新函数代替
 //    }
     Pause();
 }
-
 void Widget::on_playpositionchanged(int value)//该函数在播放进度改变时改变进度条
 {
     if(n==true){
@@ -260,7 +282,6 @@ void Widget::on_playSlider_sliderReleased()
 {
     n=true;
 }
-
 void Widget::on_listWidget_doubleClicked(const QModelIndex &index)//双击播放点击文件
 {
    // qDebug()<< index.row();
@@ -281,11 +302,6 @@ void Widget::on_voicebtn_clicked()//单击切换静音
         ui->voicebtn->setIcon(QIcon(":/image/声音.png"));
         muted=0;
     }
-
-
-
-
-
 }
 void Widget::on_voiceSlider_valueChanged(int value)//音量滑条控制音量
 {
@@ -320,24 +336,20 @@ void Widget::on_playmodebtn_clicked()//切换播放模式为随机或循环
 void Widget::contextMenuEvent(QContextMenuEvent *eve){//鼠标右击菜单
     QMenu *menu = new QMenu();
 
-    QAction *Clockwise =new QAction(u8"顺时针旋转90°",this);//u8:UTF-8
+
     QAction *Screenshots = new QAction(u8"屏幕拍照(截图)",this);
     QAction *Pause=new QAction(u8"暂停/播放",this);
-    menu->addAction(Clockwise);
+
     menu->addAction(Screenshots);
     menu->addAction(Pause);
 
-    connect(Clockwise,SIGNAL(triggered(bool)),this,SLOT(ClockWise()));
+
     connect(Screenshots,SIGNAL(triggered(bool)),this,SLOT(ScreenShots()));
     connect(Pause,SIGNAL(triggered(bool)),this,SLOT(Pause()));
     QPoint menuPos = eve->globalPos();
     menu->exec(menuPos);
 
-}
-void Widget::ClockWise(){
-    //ui->label->setRotation
-    qDebug() << "顺时针旋转90°"<<endl;
-}
+   }
 void Widget::ScreenShots(){//截图功能
     screenshotnum++;
 
@@ -345,7 +357,7 @@ void Widget::ScreenShots(){//截图功能
 
     QScreen *screen= QGuiApplication::primaryScreen();
     QPixmap pixmap=screen->grabWindow(ui->label->winId());
-    qDebug() << "截个屁图"<<endl;
+
 
     QString filePath="F:\\";
 
@@ -383,6 +395,7 @@ void Widget::keyPressEvent(QKeyEvent *eve){//空格暂停
        // qDebug()<<"space";
         return ;
     }
+
     Widget::keyPressEvent(eve);
 }
 //speed
@@ -425,4 +438,5 @@ void Widget::dropEvent(QDropEvent* e)//拖动文件后处理事件
 
 
 }
+
 

@@ -32,7 +32,7 @@ HEADERS += \
         mediawidget.h
 
 FORMS += \
-        mediawidget.ui
+    mediawidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
