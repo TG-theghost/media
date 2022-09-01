@@ -9,5 +9,7 @@
         <file>image/播放.png</file>
         <file>image/向后.png</file>
         <file>image/向前.png</file>
+        <file>image/静音.png</file>
+        <file>image/声音.png</file>
     </qresource>
 </RCC>

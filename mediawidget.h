@@ -30,6 +30,7 @@
 #include <QApplication>
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>
+#include<QMimeData>
 namespace Ui {
 class Widget;
 }
@@ -45,12 +46,10 @@ public:
 private slots:
     void on_pushButton_clicked();
     void on_toolButton_clicked();
-    void on_playSlider_valueChanged(int value);
     void on_playpositionchanged(int value);
     void on_playSlider_sliderMoved(int position);
     void on_playSlider_sliderPressed();
     void on_playSlider_sliderReleased();
-    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
     void on_listWidget_doubleClicked(const QModelIndex &index);
     void on_voicebtn_clicked();
     void on_voiceSlider_valueChanged(int value);
@@ -79,8 +78,7 @@ private:
     int i=1;
 
     bool n=true;
-    int m_oldWidth;
-    int m_oldHeight;
+
     int screenshotnum=0;
     int dblclick=0;    //判断双击次数
     bool muted=0;
@@ -89,9 +87,10 @@ private:
     QRect rect0;//全屏定位
     int speednum=1;
 
-
-    bool eventFilter(QObject *obj,QEvent *eve);
-
+    bool eventFilter(QObject *obj,QEvent *eve);//事件过滤器
+    void resizeEvent(QResizeEvent *event);//窗口大小改变事件
+    void dragEnterEvent(QDragEnterEvent*event);//拖动进入事件
+    void dropEvent(QDropEvent*event);//文件拖入处理
 
 };
 
