@@ -11,6 +11,21 @@
 #include <QRect>
 #include <QTableWidgetItem>
 //#include <QObject>
+
+#include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+#include <QMouseEvent>
+#include <QTableWidget>
+#include <QSize>
+#include <QMovie>
+#include <QGraphicsView>
+#include <QGraphicsProxyWidget>
+
+#include <QScreen>
+#include <QPixmap>
 namespace Ui {
 class Widget;
 }
@@ -25,35 +40,25 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-
-
     void on_toolButton_clicked();
-
-
     void on_playSlider_valueChanged(int value);
-
     void on_playpositionchanged(int value);
-
     void on_playSlider_sliderMoved(int position);
-
     void on_playSlider_sliderPressed();
-
     void on_playSlider_sliderReleased();
-
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-
-
     void on_listWidget_doubleClicked(const QModelIndex &index);
-
     void on_voicebtn_clicked();
-
     void on_voiceSlider_valueChanged(int value);
-
     void on_nextbtn_clicked();
-
     void on_lastbtn_clicked();
-
     void on_playmodebtn_clicked();
+    void contextMenuEvent(QContextMenuEvent *eve);
+    void ClockWise();
+    void ScreenShots();
+    void Pause();
+    void keyPressEvent(QKeyEvent *eve);
+
 
 private:
     Ui::Widget *ui;
@@ -67,8 +72,12 @@ private:
     int i=1;
 
     bool n=true;
+<<<<<<< HEAD
     int m_oldWidth;
     int m_oldHeight;
+=======
+    int screenshotnum=0;
+>>>>>>> 438a0b0b11a1449b6ac290c07d8a23ab8da34a21
     int dblclick=0;    //判断双击次数
     bool muted=0;
     bool hide=1;

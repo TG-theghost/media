@@ -188,22 +188,23 @@ void Widget::on_pushButton_clicked()//打开文件按钮
 }
 void Widget::on_toolButton_clicked()//播放按钮
 {
-    if(i==1)
-    {
-        mediaplayer->play();
-        videowidget->resize(ui->label->size());
-        ui->toolButton->setIcon(QIcon(":/image/pause.png"));
-        ui->toolButton->setIconSize(QSize(60,60));
-        i=0;
-    }
-    else if(i==0)
-    {
-        mediaplayer->pause();
-        videowidget->resize(ui->label->size());
-        ui->toolButton->setIcon(QIcon(":/image/播放.png"));
-        ui->toolButton->setIconSize(QSize(60,60));
-        i=1;
-    }
+//    if(i==1)
+//    {
+//        mediaplayer->play();
+//        videowidget->resize(ui->label->size());
+//        ui->toolButton->setIcon(QIcon(":/image/pause.png"));
+//        ui->toolButton->setIconSize(QSize(60,60));
+//        i=0;
+//    }
+//    else if(i==0)
+//    {
+//        mediaplayer->pause();
+//        videowidget->resize(ui->label->size());
+//        ui->toolButton->setIcon(QIcon(":/image/播放.png"));
+//        ui->toolButton->setIconSize(QSize(60,60));
+//        i=1;
+//    }
+    Pause();
 }
 void Widget::on_playSlider_valueChanged(int value)//进度条
 {
@@ -238,25 +239,17 @@ void Widget::on_playSlider_sliderReleased()
 {
     n=true;
 }
-
-
-
 void Widget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     //qDebug()<< item->
 
 }
-
-
-
-
 void Widget::on_listWidget_doubleClicked(const QModelIndex &index)
 {
     qDebug()<< index.row();
     mediaplaylist->setCurrentIndex(index.row());
 
 }
-
 void Widget::on_voicebtn_clicked()
 {
     if(muted==0)
@@ -275,22 +268,18 @@ void Widget::on_voicebtn_clicked()
 
 
 }
-
 void Widget::on_voiceSlider_valueChanged(int value)
 {
     mediaplayer->setVolume(value);
 }
-
 void Widget::on_nextbtn_clicked()
 {
     mediaplaylist->next();
 }
-
 void Widget::on_lastbtn_clicked()
 {
      mediaplaylist->previous();
 }
-
 void Widget::on_playmodebtn_clicked()
 {
     if(playmode==1)
@@ -309,5 +298,77 @@ void Widget::on_playmodebtn_clicked()
 
 
 }
+<<<<<<< HEAD
 
 
+=======
+void Widget::contextMenuEvent(QContextMenuEvent *eve){
+    QMenu *menu = new QMenu();
+
+    QAction *Clockwise =new QAction(u8"顺时针旋转90°",this);//u8:UTF-8
+    QAction *Screenshots = new QAction(u8"屏幕拍照(截图)",this);
+    QAction *Pause=new QAction(u8"暂停/播放",this);
+    menu->addAction(Clockwise);
+    menu->addAction(Screenshots);
+    menu->addAction(Pause);
+
+    connect(Clockwise,SIGNAL(triggered(bool)),this,SLOT(ClockWise()));
+    connect(Screenshots,SIGNAL(triggered(bool)),this,SLOT(ScreenShots()));
+    connect(Pause,SIGNAL(triggered(bool)),this,SLOT(Pause()));
+    QPoint menuPos = eve->globalPos();
+    menu->exec(menuPos);
+
+}
+
+void Widget::ClockWise(){
+    //ui->label->setRotation
+    qDebug() << "顺时针旋转90°"<<endl;
+}
+void Widget::ScreenShots(){
+    screenshotnum++;
+
+    qDebug() << "截图"<<endl;
+
+    QScreen *screen= QGuiApplication::primaryScreen();
+    QPixmap pixmap=screen->grabWindow(ui->label->winId());
+    qDebug() << "截个屁图"<<endl;
+
+    QString filePath="F:\\";
+
+    filePath.append("screenshot");
+
+
+    QString s=QString::number(screenshotnum);
+    filePath.append(s);
+    filePath.append(".jpg");
+     qDebug()<<filePath;
+    pixmap.save(filePath,"jpg");
+
+}
+void Widget::Pause(){
+        if(i==1)
+        {
+            mediaplayer->play();
+            videowidget->resize(ui->label->size());
+            ui->toolButton->setIcon(QIcon(":/image/pause.png"));
+            ui->toolButton->setIconSize(QSize(60,60));
+            i=0;
+        }
+        else if(i==0)
+        {
+            mediaplayer->pause();
+            videowidget->resize(ui->label->size());
+            ui->toolButton->setIcon(QIcon(":/image/播放.png"));
+            ui->toolButton->setIconSize(QSize(60,60));
+            i=1;
+        }
+}
+void Widget::keyPressEvent(QKeyEvent *eve){
+    if(eve->key()==Qt::Key_Space){
+        Pause();
+        qDebug()<<"space";
+        return ;
+    }
+    Widget::keyPressEvent(eve);
+}
+>>>>>>> 438a0b0b11a1449b6ac290c07d8a23ab8da34a21
