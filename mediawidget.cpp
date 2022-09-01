@@ -8,6 +8,8 @@ Widget::Widget(QWidget *parent) :
 
     ui->setupUi(this);
     setWindowTitle("某不愿透露姓名的播放器");//title
+    m_oldWidth =this->width();
+    m_oldHeight =this->height();
     mediaplayer=new QMediaPlayer;
     mediaplaylist=new QMediaPlaylist;
     videowidget=new QVideoWidget(ui->label);
@@ -20,7 +22,7 @@ Widget::Widget(QWidget *parent) :
 
     minimediaplayer->setMuted(true);
     ui->label->setStyleSheet("background-color:rgb(255,255,255)");//label界面style
-
+    ui->miniviewlable->raise();
 
     connect(mediaplayer,&QMediaPlayer::positionChanged,this, &Widget::on_playpositionchanged);
     mediaplaylist->setPlaybackMode(QMediaPlaylist::Loop);
@@ -40,6 +42,7 @@ Widget::Widget(QWidget *parent) :
     ui->playSlider->installEventFilter(this);
     ui->playslidewidget->installEventFilter(this);
     ui->label->installEventFilter(this);
+
 
 
 }
@@ -76,7 +79,7 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
         if(eve->type()==QEvent::MouseMove){
              ui->voiceSlider->show();
              ui->miniviewlable->hide();
-             hide=1;
+
 
 
         }
@@ -88,13 +91,15 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
         {
              int x=ui->vcwidget->mapFromGlobal(QCursor().pos()).x();
              int y=ui->vcwidget->mapFromGlobal(QCursor().pos()).y();
-
+             int y2=(ui->vcwidget->height()-ui->voicebtn->height())/2;
+             int y3=ui->vcwidget->height()-y2;
              //qDebug()<<x<<y;
-             if(10>x||x>200||10>y||y>50)
+
+             if(9>x||x>9+ui->voicebtn->width()+ui->voiceSlider->width()||y2>y||y>y3)
 
                          {
                              ui->voiceSlider->hide();
-                             hide=0;
+
                          }
         }
     }
@@ -103,32 +108,38 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
         {
              int x=ui->playSlider->mapFromGlobal(QCursor().pos()).x();
              int y=ui->playSlider->mapFromGlobal(QCursor().pos()).y();
+             int sx=ui->playSlider->x();
+             int sy=ui->playSlider->y();
+             int lw=ui->label->width();
+             int lh=ui->label->height();
+             int lx=ui->label->x();
+             int ly=ui->label->y();
+
 
              //qDebug()<<x<<y;
 
-             if(x-80<0)
+             if(x-lw/10<0)
              {
-                 ui->miniviewlable->setGeometry(10,349,160,90);
+                 ui->miniviewlable->setGeometry(lx,ly+lh-lh/5,lw/5,lh/5);
              }
-             else if(x+80>800)
+             else if(x+lw/10>ui->playSlider->width())
              {
-                 ui->miniviewlable->setGeometry(650,349,160,90);
+                 ui->miniviewlable->setGeometry(lw-lw/5,ly+lh-lh/5,lw/5,lh/5);
              }
              else
              {
-                  ui->miniviewlable->setGeometry(x-80,349,160,90);
+                  ui->miniviewlable->setGeometry(x-lw/10,ly+lh-lh/5,lw/5,lh/5);
              }
 
-             //ui->miniviewlable->setStyleSheet("background-color:rgb(0,0,0)");
-             if(hide!=1)
-             {
+            // ui->miniviewlable->setStyleSheet("background-color:rgb(0,0,0)");
+
                  ui->miniviewlable->show();
                  minimediaplayer->play();
-                 qint64 t=mediaplayer->duration();
-                 minimediaplayer->setPosition(x*t/800);
+                 qint64 t=minimediaplayer->duration();
+                 minimediaplayer->setPosition(x*t/ui->playSlider->width());
                  minivideowidget->resize(ui->miniviewlable->size());
                  minimediaplayer->pause();
-             }
+
 
 
 
@@ -138,15 +149,17 @@ bool Widget::eventFilter(QObject *obj,QEvent *eve){//双击全屏,再双击恢�
         if(eve->type()==QEvent::MouseMove){
             int x=ui->playslidewidget->mapFromGlobal(QCursor().pos()).x();
             int y=ui->playslidewidget->mapFromGlobal(QCursor().pos()).y();
-            if(x<750||x>810)
-            {
-                ui->voiceSlider->hide();
-                hide=0;
-            }
-            if(x<10||x>810||y<450||y>472)
+
+            int sx=ui->playSlider->x();
+            int sy=ui->playSlider->y();
+            int sw=ui->playSlider->width();
+            int sh=ui->playSlider->height();
+            if(x<sx||x>sw+sx||y<sy||y>sy+sh)
             {
                 ui->miniviewlable->hide();
+
             }
+
 
 
 
@@ -239,6 +252,8 @@ void Widget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 
 void Widget::on_listWidget_doubleClicked(const QModelIndex &index)
 {
+    qDebug()<< index.row();
+    mediaplaylist->setCurrentIndex(index.row());
 
 }
 
@@ -294,3 +309,5 @@ void Widget::on_playmodebtn_clicked()
 
 
 }
+
+

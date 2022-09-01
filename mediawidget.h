@@ -67,7 +67,8 @@ private:
     int i=1;
 
     bool n=true;
-
+    int m_oldWidth;
+    int m_oldHeight;
     int dblclick=0;    //判断双击次数
     bool muted=0;
     bool hide=1;
@@ -76,6 +77,8 @@ private:
 
 
     bool eventFilter(QObject *obj,QEvent *eve);
+
+
 };
 
 
